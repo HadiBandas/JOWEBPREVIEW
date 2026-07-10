@@ -15,25 +15,25 @@ export default async function ShopIndexPage(props: { params: Promise<{ lang: str
             id: "tops",
             title: isEn ? "Tops" : "Atasan",
             subtitle: isEn ? "Blouses & Shirts" : "Kemeja & Blus",
-            image: "/images/product-1.png", // Dummy mapping
+            image: "/images/collections/Collection 1.jpg", // Dummy mapping
         },
         {
             id: "bottoms",
             title: isEn ? "Bottoms" : "Bawahan",
             subtitle: isEn ? "Trousers & Skirts" : "Celana & Rok",
-            image: "/images/product-2.png",
+            image: "/images/collections/Collection 2.jpg",
         },
         {
             id: "dresses",
             title: isEn ? "Dresses" : "Terusan",
             subtitle: isEn ? "Dresses & Jumpsuits" : "Gaun & Jumpsuit",
-            image: "/images/product-4.png",
+            image: "/images/collections/Collection 3.jpg",
         },
         {
             id: "outerwear",
             title: isEn ? "Outerwear" : "Luaran",
             subtitle: isEn ? "Blazers & Cardigans" : "Blazer & Kardigan",
-            image: "/images/product-3.png",
+            image: "/images/collections/Collection 4.jpg",
         }
     ];
 

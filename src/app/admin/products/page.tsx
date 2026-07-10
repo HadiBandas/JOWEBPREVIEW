@@ -24,16 +24,16 @@ const COLOR_PRESETS = [
     "Dusty Blue", "Terracotta", "Olive", "Sand", "Charcoal", "Light Blue", "Blush", "Chocolate"
 ]
 const PRESET_IMAGES = [
-    "/images/product-1.png",
-    "/images/product-2.png",
-    "/images/product-3.png",
-    "/images/product-4.png",
+    "/images/products/1.jpg",
+    "/images/products/2.jpg",
+    "/images/products/3.jpg",
+    "/images/products/4.jpg",
 ]
 
 const blankProduct = (): Omit<Product, "id"> => ({
     name: "", slug: "", price: 0, currency: "IDR",
     category: "Tops", subCategory: "BLW S/S",
-    image: "/images/product-1.png", hoverImage: "/images/product-1.png",
+    image: "/images/products/1.jpg", hoverImage: "/images/products/1.jpg",
     description: "", material: "100% Pure European Linen",
     care: ["Machine wash cold"], features: [""], sustainability: ["Made locally in Bandung"],
     sizes: ["S", "M", "L"], colors: ["Ivory"],
@@ -622,7 +622,7 @@ function ProductFormView({ product, isCreating, onSave, onCancel, savedFeedback 
                             {/* Card preview */}
                             <div style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.06)", borderRadius: "12px", overflow: "hidden", marginBottom: "16px", boxShadow: "0 10px 30px rgba(0,0,0,0.05)" }}>
                                 <div style={{ position: "relative", aspectRatio: "3/4", background: "#f5f5f5" }}>
-                                    <Image src={form.image || "/images/product-1.png"} alt="preview" fill style={{ objectFit: "cover" }} />
+                                    <Image src={form.image || "/images/products/1.jpg"} alt="preview" fill style={{ objectFit: "cover" }} />
                                     <span style={{ position: "absolute", top: "12px", left: "12px", padding: "4px 10px", background: "rgba(255,255,255,0.9)", color: "#1a1a1a", fontSize: "10px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", borderRadius: "20px" }}>
                                         {form.category}
                                     </span>

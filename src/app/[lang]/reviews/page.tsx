@@ -8,7 +8,7 @@ const reviews = [
         name: "Sarah J.",
         location: "Jakarta",
         rating: 5,
-        image: "/images/product-1.png",
+        image: "/images/products/1.jpg",
         text: "Kualitas linennya benar-benar tak tertandingi. Gaun ini sudah saya cuci belasan kali dan rasanya makin lembut. Ini bukan sekadar baju — ini teman lama."
     },
     {
@@ -16,7 +16,7 @@ const reviews = [
         name: "Michelle T.",
         location: "Bali",
         rating: 5,
-        image: "/images/product-2.png",
+        image: "/images/products/2.jpg",
         text: "Akhirnya ada brand yang paham iklim tropis! Sejuk, elegan, dan setiap kali saya pakai selalu ada yang bertanya ini baju dari mana."
     },
     {
@@ -32,7 +32,7 @@ const reviews = [
         name: "Rina S.",
         location: "Bandung",
         rating: 5,
-        image: "/images/product-3.png",
+        image: "/images/products/3.jpg",
         text: "Bangga banget ada brand lokal Bandung sekelas ini. Detail jahitannya rapi banget, kerasa premiumnya. Sudah beli tiga kali dan selalu puas."
     },
     {
@@ -40,7 +40,7 @@ const reviews = [
         name: "Jessica W.",
         location: "Surabaya",
         rating: 4,
-        image: "/images/product-4.png",
+        image: "/images/products/4.jpg",
         text: "Suka banget sama pilihan warna earth tone-nya. Beli set terracotta dan hasilnya persis seperti foto. Pasti akan beli lagi."
     },
     {
