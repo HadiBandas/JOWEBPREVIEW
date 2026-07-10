@@ -1,0 +1,122 @@
+{
+  "header": {
+    "shop": "Shop",
+    "about": "Our Story",
+    "sustainability": "Sustainability",
+    "stores": "Find Us",
+    "journal": "Journal",
+    "contact": "Contact",
+    "announcement": "Now open: Heritage Bintaro — Free shipping on orders above Rp 500k"
+  },
+  "home": {
+    "hero": {
+      "title1": "Dressed in",
+      "title2": "Quiet",
+      "subtitle": "Made by hand in Bandung. For the mornings that ask nothing of you, and the days that ask everything.",
+      "cta": "Explore the Collection",
+      "customers": "1,000+ Women Wearing Julia",
+      "newDrop": "New Arrival",
+      "collections": "Collections",
+      "pureLinen": "Pure Linen"
+    },
+    "marquee": [
+      "Slow Fashion",
+      "100% European Linen",
+      "Handmade in Bandung",
+      "Timeless by Design",
+      "Made with Intention",
+      "Wears Better with Time"
+    ],
+    "featured": {
+      "title": "From the Collection",
+      "subtitle": "Pieces that earn their place in your wardrobe",
+      "cta": "View All Pieces"
+    },
+    "brandIntro": {
+      "title1": "Linen That Lasts.",
+      "title2": "Life That Slows.",
+      "subtitle": "Designed in Bandung. Woven from 100% European linen. Cut for women who move through the world at their own pace."
+    },
+    "signature": {
+      "title1": "Dressed to",
+      "title2": "Simply Be",
+      "subtitle": "Each piece is made to live in — to soften with wear, to carry you through the ordinary and the beautiful.",
+      "cta": "Browse the Collection"
+    },
+    "testimonials": {
+      "subtitle": "From Our Customers",
+      "title1": "Women Who",
+      "title2": "Wear Julia",
+      "desc": "Real words from women who've made linen a part of how they live.",
+      "cta": "Read Their Stories"
+    },
+    "whatsapp": {
+      "subtitle": "Talk to Us",
+      "title1": "Need help finding",
+      "title2": "your right piece?",
+      "desc": "Reach the Julia Owers team directly on WhatsApp — for sizing, care questions, or simply to find what fits you.",
+      "ctaWa": "Chat on WhatsApp",
+      "ctaIg": "Follow @juliaowers",
+      "waMessage": "Hi Julia Owers! I'd love to know more about your linen collection."
+    },
+    "stores": {
+      "subtitle": "In Person",
+      "title1": "Come &",
+      "title2": "Feel It",
+      "cta": "Find a Store"
+    }
+  },
+  "footer": {
+    "brand": "Linen made slowly, made well. For the woman who knows what she wants — and takes her time getting there.",
+    "explore": "Explore",
+    "company": "Company",
+    "visitUs": "Find Us",
+    "customerCare": "Customer Care",
+    "rights": "Julia Owers. All rights reserved."
+  },
+  "shop": {
+    "title": "The Catalogue",
+    "volume": "Volume I — Bandung, 2025",
+    "newChapter": "What's New",
+    "justLanded": "Just In",
+    "editorial": "\"Still Becoming\"",
+    "quote": "\"To buy less. To choose well. To make it last.\"",
+    "philosophy": "— On the Julia Owers Way",
+    "timeless": "The Essentials",
+    "curated": "Always in Season"
+  },
+  "about": {
+    "title1": "Made from",
+    "title2": "Thread & Time",
+    "p1": "In our Bandung atelier, there is no rush. There is only the weight of good linen, the rhythm of the needle, and the quiet discipline of making something that will outlast a season.",
+    "rooted": "From Bandung, With Care",
+    "p2": "Julia Owers was born in Bandung — where Europe's finest linen traditions meet the hands of Indonesian craftswomen. Every piece is cut, sewn, and finished in-house, under the same roof, with a fair wage and a careful eye.",
+    "p3": "Our clothes are meant to be lived in. They soften as you wear them, breathe in the heat, and grow more beautiful with time. Made for women who prefer meaning over noise.",
+    "viewLocation": "See Our Location"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Questions about sizing, orders, or just curious about a piece? We're always glad to hear from you.",
+    "sendMessage": "Send us a message",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "subject": "Subject",
+    "subjects": ["General Question", "Order Status", "Sizing Help", "Returns & Exchanges", "Styling Advice", "Partnership / Collaboration", "Other"],
+    "message": "Message",
+    "messagePlaceholder": "How can we help?",
+    "sendBtn": "Send Message",
+    "sentTitle": "Message Received",
+    "sentDesc": "Thank you for writing in. We'll be in touch within 24 hours.",
+    "otherWays": "Other ways to reach us",
+    "fastest": "WhatsApp (Quickest)",
+    "reply1h": "Usually within 1 hour",
+    "igDm": "Instagram DM",
+    "reply2h": "Usually within 2 hours",
+    "emailMethod": "Email",
+    "reply24h": "Within 24 hours",
+    "visitStores": "Visit a Store",
+    "openDaily": "Open daily, 10:00 – 21:00"
+  }
+}

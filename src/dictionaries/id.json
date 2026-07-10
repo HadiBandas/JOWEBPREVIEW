@@ -1,0 +1,122 @@
+{
+  "header": {
+    "shop": "Belanja",
+    "about": "Kisah Kami",
+    "sustainability": "Keberlanjutan",
+    "stores": "Toko Kami",
+    "journal": "Jurnal",
+    "contact": "Hubungi",
+    "announcement": "Kini hadir: Heritage Bintaro — Gratis ongkir untuk pembelian di atas Rp 500rb"
+  },
+  "home": {
+    "hero": {
+      "title1": "Berpakaian",
+      "title2": "Perlahan",
+      "subtitle": "Dibuat dengan tangan di Bandung. Untuk pagi hari yang tidak meminta apa pun darimu, dan hari-hari yang meminta segalanya.",
+      "cta": "Jelajahi Koleksi",
+      "customers": "1.000+ Perempuan Memakai Julia",
+      "newDrop": "Koleksi Terbaru",
+      "collections": "Koleksi",
+      "pureLinen": "Linen Murni"
+    },
+    "marquee": [
+      "Mode Perlahan",
+      "100% Linen Eropa",
+      "Buatan Tangan di Bandung",
+      "Abadi dari Desainnya",
+      "Dibuat dengan Niat",
+      "Makin Indah Seiring Waktu"
+    ],
+    "featured": {
+      "title": "Dari Koleksi Kami",
+      "subtitle": "Busana yang layak menempati ruang di lemari Anda",
+      "cta": "Lihat Semua Koleksi"
+    },
+    "brandIntro": {
+      "title1": "Linen yang Bertahan.",
+      "title2": "Hidup yang Melambat.",
+      "subtitle": "Didesain di Bandung. Dari 100% linen Eropa. Untuk perempuan yang menjalani hari dengan caranya sendiri."
+    },
+    "signature": {
+      "title1": "Berpakaian untuk",
+      "title2": "Sekadar Ada",
+      "subtitle": "Setiap busana dirancang untuk dikenakan, bukan sekadar dilihat — melunak seiring waktu, menyertai hari-hari biasa maupun yang tak terlupakan.",
+      "cta": "Lihat Koleksi Lengkap"
+    },
+    "testimonials": {
+      "subtitle": "Dari Pelanggan Kami",
+      "title1": "Perempuan yang",
+      "title2": "Memakai Julia",
+      "desc": "Kata-kata nyata dari perempuan yang menjadikan linen bagian dari cara mereka hidup.",
+      "cta": "Baca Cerita Mereka"
+    },
+    "whatsapp": {
+      "subtitle": "Bicara Langsung dengan Kami",
+      "title1": "Butuh bantuan menemukan",
+      "title2": "busana yang pas untukmu?",
+      "desc": "Hubungi tim Julia Owers langsung lewat WhatsApp — untuk konsultasi ukuran, pertanyaan perawatan, atau sekadar mencari yang paling cocok.",
+      "ctaWa": "Chat di WhatsApp",
+      "ctaIg": "Ikuti @juliaowers",
+      "waMessage": "Halo Julia Owers! Saya ingin tahu lebih lanjut tentang koleksi linen Anda."
+    },
+    "stores": {
+      "subtitle": "Kunjungi Langsung",
+      "title1": "Datang &",
+      "title2": "Rasakan Sendiri",
+      "cta": "Temukan Toko Kami"
+    }
+  },
+  "footer": {
+    "brand": "Linen yang dibuat dengan sabar, dibuat dengan baik. Untuk perempuan yang tahu apa yang ia inginkan — dan tidak tergesa-gesa mendapatkannya.",
+    "explore": "Jelajahi",
+    "company": "Perusahaan",
+    "visitUs": "Temukan Kami",
+    "customerCare": "Layanan Pelanggan",
+    "rights": "Julia Owers. Hak cipta dilindungi."
+  },
+  "shop": {
+    "title": "Katalog",
+    "volume": "Volume I — Bandung, 2025",
+    "newChapter": "Yang Baru",
+    "justLanded": "Baru Tiba",
+    "editorial": "\"Masih Berproses\"",
+    "quote": "\"Beli lebih sedikit. Pilih dengan cermat. Pakai selamanya.\"",
+    "philosophy": "— Cara Hidup Julia Owers",
+    "timeless": "Yang Selalu Ada",
+    "curated": "Tak Pernah Ketinggalan Zaman"
+  },
+  "about": {
+    "title1": "Lahir dari",
+    "title2": "Benang & Kesabaran",
+    "p1": "Di atelier kami di Bandung, tak ada yang tergesa-gesa. Yang ada hanya bobot linen yang baik, irama jarum, dan kedisiplinan diam-diam dalam membuat sesuatu yang tidak hanya bertahan satu musim.",
+    "rooted": "Dari Bandung, dengan Sepenuh Hati",
+    "p2": "Julia Owers lahir di Bandung — tempat di mana tradisi linen terbaik Eropa bertemu dengan tangan-tangan pengrajin Indonesia. Setiap busana dipotong, dijahit, dan diselesaikan di bawah satu atap yang sama, dengan upah yang layak dan perhatian yang teliti.",
+    "p3": "Busana kami dibuat untuk dikenakan. Makin dipakai, makin lembut. Bernapas di tengah terik, dan makin indah seiring berjalannya waktu. Untuk perempuan yang lebih memilih makna daripada kebisingan.",
+    "viewLocation": "Lihat Lokasi Kami"
+  },
+  "contact": {
+    "title": "Hubungi Kami",
+    "subtitle": "Ada pertanyaan soal ukuran, pesanan, atau sekadar penasaran dengan satu busana? Kami selalu senang mendengar dari Anda.",
+    "sendMessage": "Kirim pesan untuk kami",
+    "name": "Nama",
+    "namePlaceholder": "Nama Anda",
+    "email": "Email",
+    "emailPlaceholder": "email@anda.com",
+    "subject": "Perihal",
+    "subjects": ["Pertanyaan Umum", "Status Pesanan", "Bantuan Ukuran", "Pengembalian & Penukaran", "Saran Gaya", "Kemitraan / Kolaborasi", "Lainnya"],
+    "message": "Pesan",
+    "messagePlaceholder": "Ada yang bisa kami bantu?",
+    "sendBtn": "Kirim Pesan",
+    "sentTitle": "Pesan Diterima",
+    "sentDesc": "Terima kasih sudah menulis kepada kami. Kami akan segera menghubungi Anda dalam 24 jam.",
+    "otherWays": "Cara lain menghubungi kami",
+    "fastest": "WhatsApp (Paling Cepat)",
+    "reply1h": "Biasanya dalam 1 jam",
+    "igDm": "DM Instagram",
+    "reply2h": "Biasanya dalam 2 jam",
+    "emailMethod": "Email",
+    "reply24h": "Dalam waktu 24 jam",
+    "visitStores": "Kunjungi Toko Kami",
+    "openDaily": "Buka setiap hari, pukul 10.00 – 21.00"
+  }
+}

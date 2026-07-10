@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand Luxury Palette */
+  --linen-light: #F9F8F6;
+  --linen-dark: #EBE5DB;
+  --charcoal: #1A1A1A;
+  --earth: #8C7866;
+  --sage: #A3B1A1;
+  --rust: #BF7860;
+
+  /* UI Colors */
+  --background: var(--linen-light);
+  --foreground: var(--charcoal);
+  --border: rgba(26, 26, 26, 0.08);
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-lora);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-linen: var(--linen-dark);
+  --color-charcoal: var(--charcoal);
+  --color-earth: var(--earth);
+}
+
+/* Luxury Reset */
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Typography Scale - Editorial */
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  /* Lighter weight for elegance */
+  letter-spacing: -0.02em;
+}
+
+/* Utility Animations */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    transform: scale(1.1);
+    filter: blur(10px);
+  }
+
+  to {
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+.animate-reveal {
+  animation: reveal-up 1s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+.animate-scale {
+  animation: scale-in 1.5s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--earth);
+  border-radius: 3px;
+}
+
+/* Image Hover Effect */
+.img-hover-zoom {
+  transition: transform 0.7s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.group:hover .img-hover-zoom {
+  transform: scale(1.05);
+}
+
+/* Hide scrollbar for horizontal scroll carousels on mobile */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Article / Journal Prose Styles */
+.prose-custom h2 {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  color: var(--charcoal);
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.prose-custom p {
+  color: rgba(26, 26, 26, 0.7);
+  line-height: 1.85;
+  margin-bottom: 1.5rem;
+  font-size: 1.05rem;
+}
+
+.prose-custom strong {
+  color: var(--charcoal);
+  font-weight: 600;
+}
+
+.prose-custom em {
+  font-style: italic;
+}
+
+.prose-custom a {
+  color: var(--earth);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.prose-custom a:hover {
+  color: var(--charcoal);
+}
+
+.prose-custom hr {
+  border-color: rgba(26, 26, 26, 0.08);
+  margin: 3rem 0;
+}
+
+.prose-custom ul {
+  margin: 1.5rem 0;
+}
+
+.prose-custom li {
+  color: rgba(26, 26, 26, 0.7);
+  line-height: 1.7;
+  margin-bottom: 0.4rem;
+}
+
+.prose-custom table {
+  width: 100%;
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+
+.prose-custom th {
+  background: var(--charcoal);
+  color: white;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.prose-custom td {
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: rgba(26, 26, 26, 0.7);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+}
