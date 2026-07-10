@@ -13,7 +13,7 @@ export function VisitStores({ dict }: { dict: Record<string, string> }) {
             {/* Full width immersive image */}
             <div className="absolute inset-0">
                 <Image
-                    src="/images/product-4.png"
+                    src="/images/stores/Bandung.jpg"
                     alt="Our Store Interior"
                     fill
                     className="object-cover grayscale hover:grayscale-0 transition-all duration-1000 ease-in-out"

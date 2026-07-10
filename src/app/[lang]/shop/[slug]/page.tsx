@@ -55,10 +55,10 @@ export default function ProductPage() {
                         {/* Mock extra images grid */}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="relative aspect-[3/4] bg-gray-100">
-                                <Image src="/images/hero.png" alt="Detail 1" fill className="object-cover" />
+                                <Image src="/images/collections/Collection 4.jpg" alt="Detail 1" fill className="object-cover" />
                             </div>
                             <div className="relative aspect-[3/4] bg-gray-100">
-                                <Image src="/images/product-2.png" alt="Detail 2" fill className="object-cover" />
+                                <Image src="/images/collections/Collection 5.jpg" alt="Detail 2" fill className="object-cover" />
                             </div>
                         </div>
                     </div>

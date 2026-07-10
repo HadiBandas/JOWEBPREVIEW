@@ -74,8 +74,8 @@ export function Hero({ dict }: { dict: Record<string, string> }) {
                         >
                             <motion.div style={{ y: yParallax }} className="relative w-full h-[120%] -top-[10%]">
                                 <Image
-                                    src="/images/hero.png"
-                                    alt="Julia Owers Main Look"
+                                    src="/images/hero.jpg"
+                                    alt="Linen Dress"
                                     fill
                                     className="object-cover object-top"
                                     priority
@@ -94,8 +94,8 @@ export function Hero({ dict }: { dict: Record<string, string> }) {
                         >
                             <motion.div style={{ y: yParallaxSlow }} className="relative w-full h-[120%] -top-[10%]">
                                 <Image
-                                    src="/images/product-2.png"
-                                    alt="Detail Look"
+                                    src="/images/collections/Collection 1.jpg"
+                                    alt="Linen Detail"
                                     fill
                                     className="object-cover"
                                 />

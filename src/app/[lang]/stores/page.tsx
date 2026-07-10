@@ -17,7 +17,7 @@ export default function StoresPage() {
             {/* Store 1 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[80vh]">
                 <div className="relative h-[50vh] lg:h-auto bg-gray-200">
-                    <Image src="/images/product-4.png" alt="Heritage Bandung" fill className="object-cover" />
+                    <Image src="/images/stores/Bandung.jpg" alt="Heritage Bandung" fill className="object-cover" />
                 </div>
                 <div className="flex flex-col justify-center p-12 lg:p-24 bg-white">
                     <span className="text-xs font-bold uppercase tracking-widest text-earth mb-4">Toko Utama</span>
@@ -66,7 +66,7 @@ export default function StoresPage() {
                     </div>
                 </div>
                 <div className="relative h-[50vh] lg:h-auto bg-gray-300 order-1 lg:order-2">
-                    <Image src="/images/hero.png" alt="Heritage Bintaro" fill className="object-cover" />
+                    <Image src="/images/stores/Bintaro.jpg" alt="Heritage Bintaro" fill className="object-cover" />
                 </div>
             </div>
         </main>

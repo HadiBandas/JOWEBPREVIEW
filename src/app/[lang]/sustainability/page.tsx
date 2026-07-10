@@ -69,7 +69,7 @@ export default function SustainabilityPage() {
                             </div>
                         </div>
                         <div className="relative min-h-[400px] lg:min-h-auto bg-gray-800">
-                            <Image src="/images/product-1.png" alt="Tanaman Rami" fill className="object-cover opacity-80" />
+                            <Image src="/images/about.jpg" alt="Tanaman Rami" fill className="object-cover opacity-80" />
                         </div>
                     </div>
                 </Container>

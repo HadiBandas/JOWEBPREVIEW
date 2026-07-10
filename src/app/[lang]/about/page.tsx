@@ -23,7 +23,7 @@ export default async function AboutPage(props: { params: Promise<{ lang: string 
                             </p>
                         </div>
                         <div className="relative aspect-[4/5]">
-                            <Image src="/images/hero.png" alt="Julia Owers Atelier" fill className="object-cover" />
+                            <Image src="/images/about.jpg" alt="Julia Owers Atelier" fill className="object-cover" />
                         </div>
                     </div>
                 </Container>
@@ -35,10 +35,10 @@ export default async function AboutPage(props: { params: Promise<{ lang: string 
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                         <div className="lg:col-span-5 relative h-[600px] hidden lg:block">
                             <div className="absolute left-0 top-0 w-3/4 h-3/4">
-                                <Image src="/images/product-2.png" alt="Detail" fill className="object-cover" />
+                                <Image src="/images/collections/Collection 4.jpg" alt="Detail" fill className="object-cover" />
                             </div>
                             <div className="absolute right-0 bottom-0 w-2/3 h-2/3 border-8 border-linen-light z-10">
-                                <Image src="/images/product-3.png" alt="Texture" fill className="object-cover" />
+                                <Image src="/images/collections/Collection 5.jpg" alt="Texture" fill className="object-cover" />
                             </div>
                         </div>
 

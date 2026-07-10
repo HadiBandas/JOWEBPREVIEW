@@ -42,7 +42,7 @@ export default async function ShopIndexPage(props: { params: Promise<{ lang: str
             {/* HERO SECTION */}
             <div className="relative h-[60vh] w-full bg-gray-100 flex items-center justify-center mb-20">
                 <Image
-                    src="/images/hero.png"
+                    src="/images/hero.jpg"
                     alt="Shop Collection"
                     fill
                     className="object-cover object-top"
@@ -130,10 +130,10 @@ export default async function ShopIndexPage(props: { params: Promise<{ lang: str
                         </div>
                         <div className="lg:col-span-7 order-1 lg:order-2 grid grid-cols-2 gap-4">
                             <div className="relative aspect-[3/4] bg-gray-200 mt-12">
-                                <Image src="/images/product-3.png" alt="Summer 1" fill className="object-cover" />
+                                <Image src="/images/collections/Collection 2.jpg" alt="Summer 1" fill className="object-cover" />
                             </div>
                             <div className="relative aspect-[3/4] bg-gray-200 mb-12">
-                                <Image src="/images/product-4.png" alt="Summer 2" fill className="object-cover" />
+                                <Image src="/images/collections/Collection 3.jpg" alt="Summer 2" fill className="object-cover" />
                             </div>
                         </div>
                     </div>

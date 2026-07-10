@@ -45,7 +45,7 @@ export function SignatureLooks({ dict }: { dict: Record<string, string> }) {
                             transition={{ duration: 0.8 }}
                             className="absolute right-0 top-0 w-48 aspect-[3/4] shadow-xl z-10"
                         >
-                            <Image src="/images/product-1.png" alt="Signature Look 1" fill className="object-cover p-2 bg-white" />
+                            <Image src="/images/collections/Collection 2.jpg" alt="Signature Look 1" fill className="object-cover p-2 bg-white" />
                         </motion.div>
                         <motion.div
                             initial={{ opacity: 0, rotate: 5, y: 50 }}
@@ -54,7 +54,7 @@ export function SignatureLooks({ dict }: { dict: Record<string, string> }) {
                             transition={{ duration: 0.8, delay: 0.2 }}
                             className="absolute right-32 top-12 w-48 aspect-[3/4] shadow-xl z-0"
                         >
-                            <Image src="/images/product-4.png" alt="Signature Look 2" fill className="object-cover p-2 bg-white" />
+                            <Image src="/images/collections/Collection 3.jpg" alt="Signature Look 2" fill className="object-cover p-2 bg-white" />
                         </motion.div>
                     </div>
                 </div>
@@ -83,7 +83,7 @@ export function SignatureLooks({ dict }: { dict: Record<string, string> }) {
                         viewport={{ once: true }}
                         className="relative h-full mt-12 rounded-sm overflow-hidden"
                     >
-                        <Image src="/images/product-3.png" alt="Look 3" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+                        <Image src="/images/collections/Collection 4.jpg" alt="Look 3" fill className="object-cover hover:scale-105 transition-transform duration-700" />
                     </motion.div>
                     <motion.div
                         initial={{ opacity: 0, y: 50 }}
@@ -92,7 +92,7 @@ export function SignatureLooks({ dict }: { dict: Record<string, string> }) {
                         transition={{ delay: 0.1 }}
                         className="relative h-[90%] rounded-sm overflow-hidden"
                     >
-                        <Image src="/images/product-4.png" alt="Look 4" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+                        <Image src="/images/collections/Collection 5.jpg" alt="Look 4" fill className="object-cover hover:scale-105 transition-transform duration-700" />
                     </motion.div>
                     <motion.div
                         initial={{ opacity: 0, y: 50 }}
@@ -101,7 +101,7 @@ export function SignatureLooks({ dict }: { dict: Record<string, string> }) {
                         transition={{ delay: 0.2 }}
                         className="relative h-full mt-24 rounded-sm overflow-hidden"
                     >
-                        <Image src="/images/hero.png" alt="Look 5" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+                        <Image src="/images/banner-quote.jpg" alt="Look 5" fill className="object-cover hover:scale-105 transition-transform duration-700" />
                     </motion.div>
                 </div>
 
