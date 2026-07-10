@@ -10,9 +10,9 @@ export function SignatureLooks({ dict }: { dict: Record<string, string> }) {
     const lang = (params?.lang as string) || 'id'
 
     const looks = [
-        { src: "/images/product-3.png", alt: "Look 3" },
-        { src: "/images/product-4.png", alt: "Look 4" },
-        { src: "/images/hero.png", alt: "Look 5" },
+        { src: "/images/collections/Collection 4.jpg", alt: "Look 1" },
+        { src: "/images/collections/Collection 5.jpg", alt: "Look 2" },
+        { src: "/images/banner-quote.jpg", alt: "Look 3" },
     ]
 
     return (
