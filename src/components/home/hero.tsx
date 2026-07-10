@@ -50,7 +50,7 @@ export function Hero({ dict }: { dict: Record<string, string> }) {
                                 <div className="flex -space-x-3">
                                     {[1, 2, 3].map((i) => (
                                         <div key={i} className="w-10 h-10 rounded-full border-2 border-white overflow-hidden relative bg-gray-200">
-                                            <Image src={`/images/product-${i}.png`} alt="User" fill className="object-cover" />
+                                            <Image src={`/images/collections/Collection ${i}.jpg`} alt="User" fill className="object-cover" />
                                         </div>
                                     ))}
                                 </div>
