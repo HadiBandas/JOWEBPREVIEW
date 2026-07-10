@@ -1,11 +1,12 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import {
-    Package, CheckCircle, Clock, Truck, Filter,
-    Download, RefreshCw, ChevronDown, ChevronUp,
-    X, Search, TrendingUp, ShoppingBag, Eye, LogOut
+    Package, CheckCircle, Clock, Truck,
+    Download, RefreshCw,
+    X, Search, TrendingUp, ShoppingBag, Eye, LogOut, Package2, Settings
 } from "lucide-react"
 
 // ─────────────────────────────────────────────────────────────────
@@ -320,6 +321,25 @@ export default function AdminPage() {
                         <LogOut size={14} />
                         Keluar
                     </button>
+                </div>
+            </div>
+
+            {/* CMS Navigation Tabs */}
+            <div className="bg-white border-b border-gray-100 px-6">
+                <div className="flex gap-1 max-w-7xl mx-auto">
+                    <button className="flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 border-gray-900 text-gray-900 -mb-px">
+                        <ShoppingBag size={15} />
+                        Pesanan
+                    </button>
+                    <Link href="/admin/products"
+                        className="flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 border-transparent text-gray-400 hover:text-gray-700 hover:border-gray-300 transition-colors -mb-px">
+                        <Package2 size={15} />
+                        CMS Produk
+                    </Link>
+                    <span className="flex items-center gap-2 px-4 py-3 text-sm text-gray-300 cursor-not-allowed" title="Segera hadir">
+                        <Settings size={15} />
+                        Pengaturan
+                    </span>
                 </div>
             </div>
 

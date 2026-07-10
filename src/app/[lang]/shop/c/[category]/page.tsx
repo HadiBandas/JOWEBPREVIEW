@@ -1,6 +1,7 @@
 import { Container } from "@/components/ui/container"
 import { products } from "@/lib/data"
 import { ProductCard } from "@/components/shop/product-card"
+import { CategoryProductGrid } from "@/components/shop/category-product-grid"
 import { getDictionary } from "@/lib/dictionary"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -112,19 +113,11 @@ export default async function CategoryPage(props: Props) {
 
                     {/* Product Grid */}
                     <div className="flex-1">
-                        {categoryProducts.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-12">
-                                {categoryProducts.map((product) => (
-                                    <ProductCard key={product.id} {...product} />
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="py-24 text-center border border-dashed border-gray-200">
-                                <p className="text-charcoal/50">
-                                    {isEn ? "No products found in this category yet." : "Belum ada produk di kategori ini."}
-                                </p>
-                            </div>
-                        )}
+                        {/* Product Grid — membaca dari CMS store (client component) */}
+                    <CategoryProductGrid
+                        dataCategory={dataCategory}
+                        isEn={isEn}
+                    />
                     </div>
                 </div>
             </Container>

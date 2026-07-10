@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion"
 import { Container } from "@/components/ui/container"
-import { products } from "@/lib/data"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ProductCard } from "@/components/shop/product-card"
 import Image from "next/image"
@@ -11,11 +10,13 @@ import { useState } from "react"
 import { Star, ShoppingBag, MessageCircle, Check } from "lucide-react"
 import { SizeGuideModal } from "@/components/shop/size-guide-modal"
 import { useCartStore } from "@/store/cart-store"
+import { useProduct, useProducts } from "@/hooks/use-products"
 
 export default function ProductPage() {
     const params = useParams()
     const slug = params?.slug as string
-    const product = products.find(p => p.slug === slug)
+    const product = useProduct(slug)           // ← dari CMS store (bukan hardcode)
+    const { products } = useProducts()         // ← untuk similar products
     const [selectedSize, setSelectedSize] = useState<string>("")
     const [addedToCart, setAddedToCart] = useState(false)
     const { addItem, openCart } = useCartStore()

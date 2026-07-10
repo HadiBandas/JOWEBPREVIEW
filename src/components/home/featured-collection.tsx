@@ -2,14 +2,15 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { ArrowUpRight } from "lucide-react"
-import { products } from "@/lib/data"
 import { Container } from "@/components/ui/container"
 import { useParams } from "next/navigation"
 import { ProductCard } from "@/components/shop/product-card"
+import { useProducts } from "@/hooks/use-products"
 
 export function FeaturedCollection({ dict }: { dict: Record<string, string> }) {
     const params = useParams()
     const lang = (params?.lang as string) || 'id'
+    const { products } = useProducts()   // ← dari CMS store, bukan hardcode
     return (
         <section className="py-24 bg-linen-light/50">
             <Container>
