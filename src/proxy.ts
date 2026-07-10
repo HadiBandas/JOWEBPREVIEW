@@ -29,8 +29,8 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Match ignoring Next.js internals and static files
+  // Match ignoring Next.js internals, static files, and admin routes
   matcher: [
-    '/((?!api|_next/static|_next/image|images|favicon.ico).*)',
+    '/((?!api|admin|_next/static|_next/image|images|favicon.ico).*)',
   ],
 }
