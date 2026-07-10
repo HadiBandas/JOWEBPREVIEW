@@ -106,11 +106,15 @@ export function Header({ dictionary }: { dictionary: Record<string, string> }) {
                         {/* Center: Brand Logo */}
                         <Link
                             href={`/${lang}`}
-                            className="relative flex items-center justify-center transition-opacity hover:opacity-80"
+                            className="relative w-32 h-10 md:w-48 md:h-14 transition-opacity hover:opacity-80 flex items-center justify-center"
                         >
-                            <span className="font-serif text-2xl md:text-3xl tracking-[0.2em] uppercase text-charcoal">
-                                Julia Owers
-                            </span>
+                            <Image
+                                src="/images/jo-logo.png"
+                                alt="Julia Owers"
+                                fill
+                                className="object-contain"
+                                priority
+                            />
                         </Link>
 
                         {/* Right: Icons & Language Switcher */}
