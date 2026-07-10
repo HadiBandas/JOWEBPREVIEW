@@ -122,7 +122,7 @@ export default async function ShopIndexPage(props: { params: Promise<{ lang: str
                                     : "Nyaman, ringan, dan elegan. Temukan pilihan potongan linen yang dirancang khusus untuk hari-hari tercerah."}
                             </p>
                             <Link
-                                href={`/${lang}/shop`} // For demo, links back to shop
+                                href={`/${lang}/shop/collection/summer-essentials`}
                                 className="inline-flex items-center gap-2 border-b border-charcoal pb-1 text-sm font-medium hover:text-earth hover:border-earth transition-colors"
                             >
                                 {isEn ? "View Collection" : "Lihat Koleksi"} <ArrowUpRight className="w-4 h-4" />
