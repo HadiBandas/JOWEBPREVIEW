@@ -1,151 +1,87 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import {
-    Package, CheckCircle, Clock, Truck,
-    Download, RefreshCw,
-    X, Search, TrendingUp, ShoppingBag, Eye, LogOut, Package2, Settings
+    Clock, Truck, Download, RefreshCw,
+    Search, TrendingUp, ShoppingBag, Eye, AlertCircle,
+    ChevronRight, CheckCircle
 } from "lucide-react"
+import { AdminSidebar } from "@/components/admin/admin-sidebar"
 
-// ─────────────────────────────────────────────────────────────────
-// KONFIGURASI ADMIN
-// Ganti password ini dengan environment variable di server
-// process.env.ADMIN_PASSWORD
-// ─────────────────────────────────────────────────────────────────
 const ADMIN_PASSWORD = "juliaowers2026"
 
-// ─────────────────────────────────────────────────────────────────
-// TYPE DEFINITIONS
-// ─────────────────────────────────────────────────────────────────
 type OrderStatus = "pending" | "confirmed" | "processing" | "shipped" | "done" | "cancelled"
 
-interface OrderItem {
-    name: string
-    size: string
-    quantity: number
-    price: number
-}
-
+interface OrderItem { name: string; size: string; quantity: number; price: number }
 interface Order {
-    id: string
-    customerName: string
-    customerPhone: string
-    customerEmail?: string
-    address: string
-    city: string
-    province: string
-    postalCode: string
-    courier: string
-    notes?: string
-    items: OrderItem[]
-    subtotal: number
-    shippingCost: number
-    total: number
-    status: OrderStatus
-    trackingNumber?: string
-    createdAt: string
-    updatedAt: string
+    id: string; customerName: string; customerPhone: string; customerEmail?: string
+    address: string; city: string; province: string; postalCode: string
+    courier: string; notes?: string; items: OrderItem[]
+    subtotal: number; shippingCost: number; total: number
+    status: OrderStatus; trackingNumber?: string; createdAt: string; updatedAt: string
 }
 
-// ─────────────────────────────────────────────────────────────────
-// STATUS CONFIG
-// ─────────────────────────────────────────────────────────────────
-const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string; bg: string; icon: React.ReactNode }> = {
-    pending:    { label: "Menunggu",  color: "text-amber-700",  bg: "bg-amber-50 border-amber-200",  icon: <Clock size={12} /> },
-    confirmed:  { label: "Dikonfirmasi", color: "text-blue-700", bg: "bg-blue-50 border-blue-200",   icon: <CheckCircle size={12} /> },
-    processing: { label: "Diproses",  color: "text-purple-700", bg: "bg-purple-50 border-purple-200", icon: <Package size={12} /> },
-    shipped:    { label: "Dikirim",   color: "text-emerald-700", bg: "bg-emerald-50 border-emerald-200", icon: <Truck size={12} /> },
-    done:       { label: "Selesai",   color: "text-gray-600",   bg: "bg-gray-50 border-gray-200",    icon: <CheckCircle size={12} /> },
-    cancelled:  { label: "Dibatal",   color: "text-red-700",    bg: "bg-red-50 border-red-200",      icon: <X size={12} /> },
+const STATUS_CFG: Record<OrderStatus, { label: string; color: string; bg: string; dot: string; border: string }> = {
+    pending:    { label: "Menunggu",     color: "#b45309", bg: "#fef3c7", border: "#fde68a", dot: "#d97706" },
+    confirmed:  { label: "Dikonfirmasi", color: "#1d4ed8", bg: "#dbeafe", border: "#bfdbfe", dot: "#3b82f6" },
+    processing: { label: "Diproses",     color: "#6d28d9", bg: "#ede9fe", border: "#ddd6fe", dot: "#8b5cf6" },
+    shipped:    { label: "Dikirim",      color: "#047857", bg: "#d1fae5", border: "#a7f3d0", dot: "#10b981" },
+    done:       { label: "Selesai",      color: "#374151", bg: "#f3f4f6", border: "#e5e7eb", dot: "#6b7280" },
+    cancelled:  { label: "Dibatalkan",   color: "#b91c1c", bg: "#fee2e2", border: "#fecaca", dot: "#ef4444" },
 }
-
 const STATUS_FLOW: OrderStatus[] = ["pending", "confirmed", "processing", "shipped", "done"]
 
-// ─────────────────────────────────────────────────────────────────
-// MOCK DATA — Tim IT ganti ini dengan fetch dari database server
-//
-// Contoh cara fetch dari server:
-// const res = await fetch('/api/admin/orders', {
-//   headers: { 'Authorization': `Bearer ${token}` }
-// })
-// const orders = await res.json()
-// ─────────────────────────────────────────────────────────────────
 const MOCK_ORDERS: Order[] = [
     {
-        id: "JO-20260710-001",
-        customerName: "Sarah Dewi Kusuma",
-        customerPhone: "08123456789",
-        customerEmail: "sarah@email.com",
-        address: "Jl. Sudirman No. 12, RT 03/05",
-        city: "Jakarta Selatan",
-        province: "DKI Jakarta",
-        postalCode: "12190",
-        courier: "JNE Reguler",
-        notes: "",
+        id: "JO-20260710-001", customerName: "Sarah Dewi Kusuma",
+        customerPhone: "08123456789", customerEmail: "sarah@email.com",
+        address: "Jl. Sudirman No. 12, RT 03/05", city: "Jakarta Selatan",
+        province: "DKI Jakarta", postalCode: "12190", courier: "JNE Reguler", notes: "",
         items: [{ name: "The Minimalist Midi Dress", size: "M", quantity: 1, price: 262000 }],
         subtotal: 262000, shippingCost: 0, total: 262000,
-        status: "pending",
-        createdAt: "2026-07-10T07:30:00Z",
-        updatedAt: "2026-07-10T07:30:00Z",
+        status: "pending", createdAt: "2026-07-10T07:30:00Z", updatedAt: "2026-07-10T07:30:00Z",
     },
     {
-        id: "JO-20260710-002",
-        customerName: "Rina Kartika",
-        customerPhone: "08234567890",
-        address: "Jl. Raya Bogor No. 45",
-        city: "Bogor",
-        province: "Jawa Barat",
-        postalCode: "16161",
-        courier: "J&T Reguler",
+        id: "JO-20260710-002", customerName: "Rina Kartika",
+        customerPhone: "08234567890", address: "Jl. Raya Bogor No. 45",
+        city: "Bogor", province: "Jawa Barat", postalCode: "16161", courier: "J&T Reguler",
         items: [
             { name: "Relaxed Wide Leg Trousers", size: "L", quantity: 1, price: 198000 },
             { name: "Oversized Breeze Blouse", size: "One Size", quantity: 1, price: 168000 },
         ],
         subtotal: 366000, shippingCost: 0, total: 366000,
-        status: "confirmed",
-        createdAt: "2026-07-10T06:15:00Z",
-        updatedAt: "2026-07-10T08:00:00Z",
+        status: "confirmed", createdAt: "2026-07-10T06:15:00Z", updatedAt: "2026-07-10T08:00:00Z",
     },
     {
-        id: "JO-20260709-015",
-        customerName: "Amanda Lestari",
-        customerPhone: "08345678901",
-        address: "Jl. Gatot Subroto Blok C No. 8",
-        city: "Bandung",
-        province: "Jawa Barat",
-        postalCode: "40262",
-        courier: "JNE YES (Express)",
+        id: "JO-20260709-015", customerName: "Amanda Lestari",
+        customerPhone: "08345678901", address: "Jl. Gatot Subroto Blok C No. 8",
+        city: "Bandung", province: "Jawa Barat", postalCode: "40262", courier: "JNE YES (Express)",
         items: [{ name: "Terracotta Wrap Dress", size: "S", quantity: 1, price: 285000 }],
         subtotal: 285000, shippingCost: 35000, total: 320000,
-        status: "shipped",
-        trackingNumber: "JNE0012345678",
-        createdAt: "2026-07-09T14:20:00Z",
-        updatedAt: "2026-07-10T09:00:00Z",
+        status: "shipped", trackingNumber: "JNE0012345678",
+        createdAt: "2026-07-09T14:20:00Z", updatedAt: "2026-07-10T09:00:00Z",
     },
     {
-        id: "JO-20260708-009",
-        customerName: "Jessica Wulandari",
-        customerPhone: "08456789012",
-        address: "Perum Citraland Blok K5 No. 2",
-        city: "Surabaya",
-        province: "Jawa Timur",
-        postalCode: "60218",
-        courier: "JNE Reguler",
+        id: "JO-20260708-009", customerName: "Jessica Wulandari",
+        customerPhone: "08456789012", address: "Perum Citraland Blok K5 No. 2",
+        city: "Surabaya", province: "Jawa Timur", postalCode: "60218", courier: "JNE Reguler",
         items: [{ name: "Classic Linen Shirt", size: "M", quantity: 2, price: 178000 }],
         subtotal: 356000, shippingCost: 0, total: 356000,
-        status: "done",
-        trackingNumber: "JNE0009876543",
-        createdAt: "2026-07-08T10:00:00Z",
-        updatedAt: "2026-07-10T07:00:00Z",
+        status: "done", trackingNumber: "JNE0009876543",
+        createdAt: "2026-07-08T10:00:00Z", updatedAt: "2026-07-10T07:00:00Z",
+    },
+    {
+        id: "JO-20260707-004", customerName: "Dina Pratiwi",
+        customerPhone: "08567890123", address: "Komplek Villa Mas No. 7",
+        city: "Tangerang", province: "Banten", postalCode: "15111", courier: "SiCepat Reguler",
+        items: [{ name: "Flowy Midi Skirt", size: "S", quantity: 1, price: 225000 }],
+        subtotal: 225000, shippingCost: 18000, total: 243000,
+        status: "cancelled", createdAt: "2026-07-07T09:00:00Z", updatedAt: "2026-07-07T14:00:00Z",
     },
 ]
 
-// ─────────────────────────────────────────────────────────────────
-// MAIN COMPONENT
-// ─────────────────────────────────────────────────────────────────
-export default function AdminPage() {
+export default function AdminOrdersPage() {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [password, setPassword] = useState("")
     const [authError, setAuthError] = useState("")
@@ -156,10 +92,8 @@ export default function AdminPage() {
     const [trackingInputs, setTrackingInputs] = useState<Record<string, string>>({})
     const [isRefreshing, setIsRefreshing] = useState(false)
 
-    // Cek session login
     useEffect(() => {
-        const auth = sessionStorage.getItem("jo_admin_auth")
-        if (auth === "true") setIsAuthenticated(true)
+        if (sessionStorage.getItem("jo_admin_auth") === "true") setIsAuthenticated(true)
     }, [])
 
     const handleLogin = (e: React.FormEvent) => {
@@ -167,9 +101,7 @@ export default function AdminPage() {
         if (password === ADMIN_PASSWORD) {
             sessionStorage.setItem("jo_admin_auth", "true")
             setIsAuthenticated(true)
-        } else {
-            setAuthError("Password salah. Coba lagi.")
-        }
+        } else setAuthError("Password salah.")
     }
 
     const handleLogout = () => {
@@ -177,11 +109,6 @@ export default function AdminPage() {
         setIsAuthenticated(false)
     }
 
-    // ──────────────────────────────────────────────────────────────
-    // UPDATE STATUS ORDER
-    // TODO Tim IT: Ganti dengan API call ke server database
-    // PUT /api/admin/orders/:id { status, trackingNumber }
-    // ──────────────────────────────────────────────────────────────
     const updateOrderStatus = useCallback((orderId: string, newStatus: OrderStatus, trackingNumber?: string) => {
         setOrders(prev => prev.map(o =>
             o.id === orderId
@@ -190,426 +117,331 @@ export default function AdminPage() {
         ))
     }, [])
 
-    // ──────────────────────────────────────────────────────────────
-    // REFRESH DATA
-    // TODO Tim IT: Fetch ulang dari server database
-    // ──────────────────────────────────────────────────────────────
     const handleRefresh = () => {
         setIsRefreshing(true)
         setTimeout(() => setIsRefreshing(false), 800)
-        // TODO: fetch('/api/admin/orders').then(r => r.json()).then(setOrders)
     }
 
-    // ──────────────────────────────────────────────────────────────
-    // EXPORT CSV
-    // ──────────────────────────────────────────────────────────────
     const exportCSV = () => {
         const header = ["ID", "Tanggal", "Nama", "HP", "Kota", "Produk", "Total", "Status", "No Resi"]
         const rows = orders.map(o => [
-            o.id,
-            new Date(o.createdAt).toLocaleDateString("id-ID"),
-            o.customerName,
-            o.customerPhone,
-            `${o.city}, ${o.province}`,
+            o.id, new Date(o.createdAt).toLocaleDateString("id-ID"),
+            o.customerName, o.customerPhone, `${o.city}, ${o.province}`,
             o.items.map(i => `${i.name} (${i.size}) x${i.quantity}`).join(" | "),
-            o.total,
-            STATUS_CONFIG[o.status].label,
-            o.trackingNumber ?? "-"
+            o.total, STATUS_CFG[o.status].label, o.trackingNumber ?? "-"
         ])
         const csv = [header, ...rows].map(r => r.join(",")).join("\n")
         const blob = new Blob([csv], { type: "text/csv" })
         const url = URL.createObjectURL(blob)
         const a = document.createElement("a")
         a.href = url
-        a.download = `julia-owers-orders-${new Date().toISOString().slice(0, 10)}.csv`
+        a.download = `jo-orders-${new Date().toISOString().slice(0, 10)}.csv`
         a.click()
         URL.revokeObjectURL(url)
     }
 
-    // Filter & search
     const filteredOrders = orders.filter(o => {
         const matchStatus = filterStatus === "all" || o.status === filterStatus
         const q = searchQuery.toLowerCase()
-        const matchSearch = !q || o.id.toLowerCase().includes(q) ||
-            o.customerName.toLowerCase().includes(q) ||
-            o.customerPhone.includes(q) ||
-            o.city.toLowerCase().includes(q)
-        return matchStatus && matchSearch
+        return matchStatus && (!q || o.id.toLowerCase().includes(q) ||
+            o.customerName.toLowerCase().includes(q) || o.customerPhone.includes(q) ||
+            o.city.toLowerCase().includes(q))
     })
 
-    // Stats
     const stats = {
-        todayRevenue: orders
-            .filter(o => new Date(o.createdAt).toDateString() === new Date().toDateString() && o.status !== "cancelled")
-            .reduce((sum, o) => sum + o.total, 0),
-        totalOrders: orders.length,
-        pendingCount: orders.filter(o => o.status === "pending").length,
-        shippedCount: orders.filter(o => o.status === "shipped").length,
+        todayRevenue: orders.filter(o => new Date(o.createdAt).toDateString() === new Date().toDateString() && o.status !== "cancelled").reduce((s, o) => s + o.total, 0),
+        total: orders.length,
+        pending: orders.filter(o => o.status === "pending").length,
+        shipped: orders.filter(o => o.status === "shipped").length,
     }
 
-    // ─── LOGIN PAGE ───
+    // ── LOGIN ──
     if (!isAuthenticated) {
         return (
-            <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-white w-full max-w-sm p-8"
-                >
-                    <div className="text-center mb-8">
-                        <h1 className="font-serif text-2xl text-gray-900 mb-1">Julia Owers</h1>
-                        <p className="text-xs text-gray-400 uppercase tracking-widest">Admin Dashboard</p>
-                    </div>
-
-                    <form onSubmit={handleLogin} className="space-y-4">
-                        <div>
-                            <label className="block text-xs font-medium uppercase tracking-widest text-gray-500 mb-2">
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={e => { setPassword(e.target.value); setAuthError("") }}
-                                placeholder="Masukkan password admin"
-                                className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-gray-900"
-                                autoFocus
-                            />
-                            {authError && (
-                                <p className="mt-2 text-xs text-red-500">{authError}</p>
-                            )}
+            <div style={{ minHeight: "100vh", background: "#fcfcfc", display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}>
+                <div style={{ width: "100%", maxWidth: "380px" }}>
+                    <div style={{ textAlign: "center", marginBottom: "32px" }}>
+                        <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "60px", height: "60px", borderRadius: "16px", background: "#fff", border: "1px solid rgba(0,0,0,0.06)", marginBottom: "16px", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
+                            <ShoppingBag size={26} color="#1a1a1a" />
                         </div>
-                        <button
-                            type="submit"
-                            className="w-full h-12 bg-gray-900 text-white font-medium uppercase tracking-widest text-sm hover:bg-gray-700 transition-colors"
-                        >
-                            Masuk
-                        </button>
-                    </form>
-                </motion.div>
+                        <h1 style={{ fontFamily: "serif", fontSize: "28px", color: "#1a1a1a", marginBottom: "6px" }}>Julia Owers</h1>
+                        <p style={{ fontSize: "11px", color: "rgba(0,0,0,0.4)", letterSpacing: "0.2em", textTransform: "uppercase" }}>Admin Dashboard</p>
+                    </div>
+                    <div style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.06)", borderRadius: "16px", padding: "32px", boxShadow: "0 8px 30px rgba(0,0,0,0.02)" }}>
+                        <form onSubmit={handleLogin}>
+                            <label style={{ display: "block", fontSize: "11px", fontWeight: 600, color: "rgba(0,0,0,0.5)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "8px" }}>Password</label>
+                            <input type="password" value={password}
+                                onChange={e => { setPassword(e.target.value); setAuthError("") }}
+                                placeholder="••••••••••••" autoFocus
+                                style={{ width: "100%", background: "#fafafa", border: "1px solid rgba(0,0,0,0.1)", borderRadius: "10px", padding: "12px 16px", fontSize: "14px", color: "#1a1a1a", outline: "none", boxSizing: "border-box", marginBottom: authError ? "8px" : "20px", transition: "border 0.2s" }} 
+                                onFocus={e => e.target.style.borderColor = "#1a1a1a"}
+                                onBlur={e => e.target.style.borderColor = "rgba(0,0,0,0.1)"}
+                            />
+                            {authError && <p style={{ display: "flex", alignItems: "center", gap: "6px", color: "#ef4444", fontSize: "12px", marginBottom: "16px" }}><AlertCircle size={13} /> {authError}</p>}
+                            <button type="submit" style={{ width: "100%", height: "48px", background: "#1a1a1a", color: "#fff", borderRadius: "10px", fontWeight: 600, fontSize: "14px", border: "none", cursor: "pointer", transition: "background 0.2s" }} onMouseOver={e => e.currentTarget.style.background = "#333"} onMouseOut={e => e.currentTarget.style.background = "#1a1a1a"}>Masuk ke Dashboard</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         )
     }
 
-    // ─── DASHBOARD ───
+    // ── DASHBOARD ──
     return (
-        <div className="min-h-screen bg-gray-50">
-            {/* Top Bar */}
-            <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
-                <div>
-                    <h1 className="font-serif text-xl text-gray-900">Julia Owers</h1>
-                    <p className="text-xs text-gray-400 uppercase tracking-widest">Admin Dashboard</p>
-                </div>
-                <div className="flex items-center gap-3">
-                    <button
-                        onClick={handleRefresh}
-                        className={`p-2 text-gray-400 hover:text-gray-700 transition-colors ${isRefreshing ? "animate-spin" : ""}`}
-                        title="Refresh data"
-                    >
-                        <RefreshCw size={18} />
-                    </button>
-                    <button
-                        onClick={exportCSV}
-                        className="flex items-center gap-2 px-4 py-2 border border-gray-200 text-sm text-gray-600 hover:border-gray-400 transition-colors"
-                    >
-                        <Download size={14} />
-                        Export CSV
-                    </button>
-                    <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-400 hover:text-gray-700 transition-colors"
-                    >
-                        <LogOut size={14} />
-                        Keluar
-                    </button>
-                </div>
-            </div>
+        <div style={{ display: "flex", minHeight: "100vh", background: "#faf9f8" }}>
+            <AdminSidebar onLogout={handleLogout} />
 
-            {/* CMS Navigation Tabs */}
-            <div className="bg-white border-b border-gray-100 px-6">
-                <div className="flex gap-1 max-w-7xl mx-auto">
-                    <button className="flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 border-gray-900 text-gray-900 -mb-px">
-                        <ShoppingBag size={15} />
-                        Pesanan
-                    </button>
-                    <Link href="/admin/products"
-                        className="flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 border-transparent text-gray-400 hover:text-gray-700 hover:border-gray-300 transition-colors -mb-px">
-                        <Package2 size={15} />
-                        CMS Produk
-                    </Link>
-                    <span className="flex items-center gap-2 px-4 py-3 text-sm text-gray-300 cursor-not-allowed" title="Segera hadir">
-                        <Settings size={15} />
-                        Pengaturan
-                    </span>
-                </div>
-            </div>
-
-            <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
-
-                {/* Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                    {[
-                        { label: "Revenue Hari Ini", value: `Rp ${stats.todayRevenue.toLocaleString("id-ID")}`, icon: <TrendingUp size={18} className="text-emerald-500" /> },
-                        { label: "Total Order", value: stats.totalOrders, icon: <ShoppingBag size={18} className="text-blue-500" /> },
-                        { label: "Menunggu Konfirmasi", value: stats.pendingCount, icon: <Clock size={18} className="text-amber-500" /> },
-                        { label: "Sedang Dikirim", value: stats.shippedCount, icon: <Truck size={18} className="text-purple-500" /> },
-                    ].map(stat => (
-                        <div key={stat.label} className="bg-white p-5 border border-gray-100">
-                            <div className="flex items-center justify-between mb-3">
-                                <span className="text-xs text-gray-400 uppercase tracking-wider">{stat.label}</span>
-                                {stat.icon}
-                            </div>
-                            <p className="text-2xl font-semibold text-gray-900">{stat.value}</p>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Filter & Search */}
-                <div className="flex flex-col md:flex-row gap-3 mb-6">
-                    {/* Search */}
-                    <div className="relative flex-1">
-                        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                        <input
-                            type="text"
-                            placeholder="Cari nama, nomor HP, ID order, kota..."
-                            value={searchQuery}
-                            onChange={e => setSearchQuery(e.target.value)}
-                            className="w-full border border-gray-200 pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:border-gray-400"
-                        />
+            <main style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+                {/* Header */}
+                <header style={{ background: "rgba(255,255,255,0.8)", borderBottom: "1px solid rgba(0,0,0,0.06)", padding: "20px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 10, backdropFilter: "blur(12px)" }}>
+                    <div>
+                        <h1 style={{ fontFamily: "serif", fontSize: "24px", color: "#1a1a1a", marginBottom: "4px" }}>Manajemen Pesanan</h1>
+                        <p style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)" }}>
+                            Kelola semua pesanan masuk · <strong style={{ color: "#1a1a1a", fontWeight: 600 }}>{orders.length} total order</strong>
+                        </p>
                     </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <button onClick={handleRefresh} title="Refresh"
+                            style={{ padding: "10px", borderRadius: "8px", border: "1px solid rgba(0,0,0,0.08)", background: "#fff", color: "rgba(0,0,0,0.6)", cursor: "pointer", display: "flex", alignItems: "center", boxShadow: "0 2px 5px rgba(0,0,0,0.02)" }}>
+                            <RefreshCw size={16} style={{ animation: isRefreshing ? "spin 0.8s linear infinite" : "none" }} />
+                        </button>
+                        <button onClick={exportCSV}
+                            style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 18px", borderRadius: "8px", border: "1px solid rgba(0,0,0,0.08)", background: "#fff", color: "#1a1a1a", fontSize: "13px", fontWeight: 500, cursor: "pointer", boxShadow: "0 2px 5px rgba(0,0,0,0.02)" }}>
+                            <Download size={14} /> Export CSV
+                        </button>
+                    </div>
+                </header>
 
-                    {/* Status Filter */}
-                    <div className="flex gap-2 flex-wrap">
-                        {(["all", ...STATUS_FLOW, "cancelled"] as const).map(status => (
-                            <button
-                                key={status}
-                                onClick={() => setFilterStatus(status)}
-                                className={`px-3 py-2 text-xs font-medium uppercase tracking-wider border transition-colors ${filterStatus === status
-                                    ? "bg-gray-900 text-white border-gray-900"
-                                    : "border-gray-200 text-gray-500 hover:border-gray-400"
-                                    }`}
-                            >
-                                {status === "all" ? `Semua (${orders.length})` : STATUS_CONFIG[status].label}
-                            </button>
+                <div style={{ padding: "32px", flex: 1, maxWidth: "1400px", margin: "0 auto", width: "100%" }}>
+
+                    {/* Stats */}
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px", marginBottom: "32px" }}>
+                        {[
+                            { label: "Revenue Hari Ini", value: `Rp ${stats.todayRevenue.toLocaleString("id-ID")}`, color: "#10b981", icon: <TrendingUp size={18} color="#10b981" /> },
+                            { label: "Total Order", value: stats.total, color: "#3b82f6", icon: <ShoppingBag size={18} color="#3b82f6" /> },
+                            { label: "Menunggu Konfirmasi", value: stats.pending, color: "#d97706", icon: <Clock size={18} color="#d97706" /> },
+                            { label: "Sedang Dikirim", value: stats.shipped, color: "#8b5cf6", icon: <Truck size={18} color="#8b5cf6" /> },
+                        ].map(s => (
+                            <div key={s.label} style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.06)", borderRadius: "12px", padding: "24px", boxShadow: "0 4px 15px rgba(0,0,0,0.02)" }}>
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+                                    <p style={{ fontSize: "11px", fontWeight: 600, color: "rgba(0,0,0,0.4)", textTransform: "uppercase", letterSpacing: "0.1em" }}>{s.label}</p>
+                                    <div style={{ padding: "8px", background: `${s.color}15`, borderRadius: "8px" }}>
+                                        {s.icon}
+                                    </div>
+                                </div>
+                                <p style={{ fontFamily: typeof s.value === "string" ? "sans-serif" : "sans-serif", fontSize: typeof s.value === "string" ? "20px" : "32px", fontWeight: 700, color: "#1a1a1a", lineHeight: 1 }}>{s.value}</p>
+                            </div>
                         ))}
                     </div>
-                </div>
 
-                {/* Orders Table */}
-                <div className="bg-white border border-gray-100 overflow-hidden">
-                    {/* Table Header */}
-                    <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-gray-50 border-b border-gray-100 text-xs font-medium uppercase tracking-wider text-gray-500">
-                        <div className="col-span-3">ID & Tanggal</div>
-                        <div className="col-span-3">Pembeli</div>
-                        <div className="col-span-3">Produk</div>
-                        <div className="col-span-1 text-right">Total</div>
-                        <div className="col-span-2 text-center">Aksi</div>
-                    </div>
-
-                    {filteredOrders.length === 0 ? (
-                        <div className="text-center py-16 text-gray-400">
-                            <ShoppingBag size={40} className="mx-auto mb-3 opacity-30" />
-                            <p>Tidak ada order ditemukan</p>
+                    {/* Filter toolbar */}
+                    <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "24px", flexWrap: "wrap" }}>
+                        <div style={{ position: "relative", flex: 1, minWidth: "250px", maxWidth: "350px" }}>
+                            <Search size={16} style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", color: "rgba(0,0,0,0.3)", pointerEvents: "none" }} />
+                            <input type="text" placeholder="Cari pesanan..."
+                                value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
+                                style={{ width: "100%", paddingLeft: "40px", paddingRight: "16px", paddingTop: "12px", paddingBottom: "12px", background: "#fff", border: "1px solid rgba(0,0,0,0.08)", borderRadius: "8px", fontSize: "14px", color: "#1a1a1a", outline: "none", boxSizing: "border-box", boxShadow: "0 2px 5px rgba(0,0,0,0.02)" }} />
                         </div>
-                    ) : (
-                        <div>
-                            {filteredOrders.map(order => {
-                                const status = STATUS_CONFIG[order.status]
-                                const isExpanded = expandedOrder === order.id
-                                const nextStatus = STATUS_FLOW[STATUS_FLOW.indexOf(order.status) + 1]
-
+                        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                            {(["all", ...STATUS_FLOW, "cancelled"] as const).map(status => {
+                                const active = filterStatus === status
+                                const cfg = status !== "all" ? STATUS_CFG[status] : null
                                 return (
-                                    <div key={order.id} className="border-b border-gray-50 last:border-0">
-                                        {/* Row */}
-                                        <div className="grid grid-cols-12 gap-4 px-6 py-4 items-center hover:bg-gray-50/50 transition-colors">
-                                            {/* ID & Date */}
-                                            <div className="col-span-3">
-                                                <p className="font-mono text-xs font-semibold text-gray-900">{order.id}</p>
-                                                <p className="text-xs text-gray-400 mt-0.5">
-                                                    {new Date(order.createdAt).toLocaleString("id-ID", {
-                                                        day: "numeric", month: "short", hour: "2-digit", minute: "2-digit"
-                                                    })}
-                                                </p>
-                                                <span className={`inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 text-[10px] font-medium border rounded-full ${status.bg} ${status.color}`}>
-                                                    {status.icon}
-                                                    {status.label}
-                                                </span>
-                                            </div>
-
-                                            {/* Pembeli */}
-                                            <div className="col-span-3">
-                                                <p className="text-sm font-medium text-gray-900">{order.customerName}</p>
-                                                <p className="text-xs text-gray-400">{order.customerPhone}</p>
-                                                <p className="text-xs text-gray-400">{order.city}, {order.province}</p>
-                                            </div>
-
-                                            {/* Produk */}
-                                            <div className="col-span-3">
-                                                {order.items.slice(0, 2).map((item, i) => (
-                                                    <p key={i} className="text-xs text-gray-600 leading-relaxed">
-                                                        {item.name} ({item.size}) ×{item.quantity}
-                                                    </p>
-                                                ))}
-                                                {order.items.length > 2 && (
-                                                    <p className="text-xs text-gray-400">+{order.items.length - 2} produk lain</p>
-                                                )}
-                                            </div>
-
-                                            {/* Total */}
-                                            <div className="col-span-1 text-right">
-                                                <p className="text-sm font-semibold text-gray-900">
-                                                    Rp {(order.total / 1000).toFixed(0)}k
-                                                </p>
-                                            </div>
-
-                                            {/* Aksi */}
-                                            <div className="col-span-2 flex items-center justify-end gap-2">
-                                                {/* Tombol Next Status */}
-                                                {nextStatus && order.status !== "cancelled" && (
-                                                    <button
-                                                        onClick={() => {
-                                                            if (nextStatus === "shipped" && !trackingInputs[order.id]) {
-                                                                setExpandedOrder(order.id === expandedOrder ? null : order.id)
-                                                                return
-                                                            }
-                                                            updateOrderStatus(order.id, nextStatus, trackingInputs[order.id])
-                                                        }}
-                                                        className="px-3 py-1.5 bg-gray-900 text-white text-xs font-medium uppercase tracking-wider hover:bg-gray-700 transition-colors whitespace-nowrap"
-                                                    >
-                                                        {STATUS_CONFIG[nextStatus].label}
-                                                    </button>
-                                                )}
-
-                                                {/* Detail Toggle */}
-                                                <button
-                                                    onClick={() => setExpandedOrder(isExpanded ? null : order.id)}
-                                                    className="p-1.5 text-gray-400 hover:text-gray-700 transition-colors"
-                                                    title="Detail"
-                                                >
-                                                    <Eye size={16} />
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        {/* Expanded Detail */}
-                                        <AnimatePresence>
-                                            {isExpanded && (
-                                                <motion.div
-                                                    initial={{ height: 0, opacity: 0 }}
-                                                    animate={{ height: "auto", opacity: 1 }}
-                                                    exit={{ height: 0, opacity: 0 }}
-                                                    transition={{ duration: 0.2 }}
-                                                    className="overflow-hidden border-t border-gray-100 bg-gray-50/50"
-                                                >
-                                                    <div className="px-6 py-5 grid grid-cols-1 md:grid-cols-3 gap-6">
-                                                        {/* Detail Pesanan */}
-                                                        <div>
-                                                            <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Detail Produk</h4>
-                                                            <div className="space-y-2">
-                                                                {order.items.map((item, i) => (
-                                                                    <div key={i} className="flex justify-between text-sm">
-                                                                        <span className="text-gray-600">{item.name} ({item.size}) ×{item.quantity}</span>
-                                                                        <span className="font-medium text-gray-900">Rp {(item.price * item.quantity).toLocaleString("id-ID")}</span>
-                                                                    </div>
-                                                                ))}
-                                                                <div className="border-t border-gray-200 pt-2 space-y-1">
-                                                                    <div className="flex justify-between text-xs text-gray-500">
-                                                                        <span>Subtotal</span><span>Rp {order.subtotal.toLocaleString("id-ID")}</span>
-                                                                    </div>
-                                                                    <div className="flex justify-between text-xs text-gray-500">
-                                                                        <span>Ongkir ({order.courier})</span>
-                                                                        <span>{order.shippingCost === 0 ? "Gratis" : `Rp ${order.shippingCost.toLocaleString("id-ID")}`}</span>
-                                                                    </div>
-                                                                    <div className="flex justify-between text-sm font-bold text-gray-900">
-                                                                        <span>Total</span><span>Rp {order.total.toLocaleString("id-ID")}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        {/* Alamat */}
-                                                        <div>
-                                                            <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Alamat Pengiriman</h4>
-                                                            <p className="text-sm font-medium text-gray-900">{order.customerName}</p>
-                                                            <p className="text-sm text-gray-600">{order.address}</p>
-                                                            <p className="text-sm text-gray-600">{order.city}, {order.province} {order.postalCode}</p>
-                                                            <p className="text-sm text-gray-600 mt-1">{order.customerPhone}</p>
-                                                            {order.notes && (
-                                                                <p className="text-xs text-gray-400 italic mt-2">📝 {order.notes}</p>
-                                                            )}
-                                                        </div>
-
-                                                        {/* Aksi Detail */}
-                                                        <div>
-                                                            <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Update Status</h4>
-
-                                                            {/* Input No Resi (untuk shipped) */}
-                                                            {(order.status === "processing" || order.status === "shipped") && (
-                                                                <div className="mb-3">
-                                                                    <label className="block text-xs text-gray-500 mb-1">Nomor Resi</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        placeholder="Cth: JNE0012345678"
-                                                                        value={trackingInputs[order.id] ?? order.trackingNumber ?? ""}
-                                                                        onChange={e => setTrackingInputs(prev => ({
-                                                                            ...prev, [order.id]: e.target.value
-                                                                        }))}
-                                                                        className="w-full border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-gray-400"
-                                                                    />
-                                                                </div>
-                                                            )}
-
-                                                            {/* Status Buttons */}
-                                                            <div className="space-y-2">
-                                                                {STATUS_FLOW.filter(s => s !== order.status).map(status => (
-                                                                    <button
-                                                                        key={status}
-                                                                        onClick={() => updateOrderStatus(order.id, status, trackingInputs[order.id])}
-                                                                        className={`w-full py-2 text-xs font-medium uppercase tracking-wider border transition-colors flex items-center justify-center gap-1
-                                                                            ${status === nextStatus
-                                                                                ? "bg-gray-900 text-white border-gray-900 hover:bg-gray-700"
-                                                                                : "border-gray-200 text-gray-500 hover:border-gray-400"
-                                                                            }`}
-                                                                    >
-                                                                        {STATUS_CONFIG[status].icon}
-                                                                        {STATUS_CONFIG[status].label}
-                                                                    </button>
-                                                                ))}
-                                                                {order.status !== "cancelled" && (
-                                                                    <button
-                                                                        onClick={() => updateOrderStatus(order.id, "cancelled")}
-                                                                        className="w-full py-2 text-xs font-medium uppercase tracking-wider border border-red-200 text-red-400 hover:border-red-500 hover:text-red-600 transition-colors"
-                                                                    >
-                                                                        Batalkan Order
-                                                                    </button>
-                                                                )}
-                                                            </div>
-
-                                                            {/* WhatsApp Hubungi Pembeli */}
-                                                            <a
-                                                                href={`https://wa.me/${order.customerPhone.replace(/^0/, "62")}?text=Halo%20${encodeURIComponent(order.customerName)}%2C%20kami%20dari%20Julia%20Owers...`}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                                className="mt-3 w-full py-2 text-xs font-medium uppercase tracking-wider border border-green-200 text-green-600 hover:bg-green-50 transition-colors flex items-center justify-center gap-1"
-                                                            >
-                                                                💬 Hubungi via WA
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-                                    </div>
+                                    <button key={status} onClick={() => setFilterStatus(status)}
+                                        style={{ padding: "10px 16px", borderRadius: "8px", fontSize: "13px", fontWeight: active ? 600 : 500, border: `1px solid ${active ? (cfg ? cfg.border : "#1a1a1a") : "rgba(0,0,0,0.06)"}`, cursor: "pointer", background: active ? (cfg ? cfg.bg : "#1a1a1a") : "#fff", color: active ? (cfg ? cfg.color : "#fff") : "rgba(0,0,0,0.6)", transition: "all 0.15s", boxShadow: active ? "none" : "0 2px 5px rgba(0,0,0,0.02)" }}>
+                                        {status === "all" ? `Semua (${orders.length})` : STATUS_CFG[status].label}
+                                    </button>
                                 )
                             })}
                         </div>
-                    )}
-                </div>
+                    </div>
 
-                {/* Footer note */}
-                <p className="text-center text-xs text-gray-400 mt-8">
-                    Data sementara menggunakan mock data. Tim IT — hubungkan ke API server untuk data real.
-                </p>
-            </div>
+                    {/* Orders list */}
+                    <div style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.06)", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
+                        {/* Header row */}
+                        <div style={{ display: "grid", gridTemplateColumns: "200px 1fr 1fr 120px 160px", gap: "16px", padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.06)", background: "#fafafa", fontSize: "11px", fontWeight: 600, color: "rgba(0,0,0,0.4)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                            <div>ID & Tanggal</div>
+                            <div>Pembeli</div>
+                            <div>Produk</div>
+                            <div style={{ textAlign: "right" }}>Total</div>
+                            <div style={{ textAlign: "center" }}>Aksi</div>
+                        </div>
+
+                        {filteredOrders.length === 0 ? (
+                            <div style={{ textAlign: "center", padding: "80px 24px", color: "rgba(0,0,0,0.4)" }}>
+                                <ShoppingBag size={48} style={{ margin: "0 auto 16px", opacity: 0.2 }} />
+                                <p style={{ fontSize: "15px" }}>Tidak ada order ditemukan</p>
+                            </div>
+                        ) : filteredOrders.map(order => {
+                            const cfg = STATUS_CFG[order.status]
+                            const isExpanded = expandedOrder === order.id
+                            const nextStatus = STATUS_FLOW[STATUS_FLOW.indexOf(order.status) + 1]
+
+                            return (
+                                <div key={order.id} style={{ borderBottom: "1px solid rgba(0,0,0,0.04)" }}>
+                                    {/* Main row */}
+                                    <div style={{ display: "grid", gridTemplateColumns: "200px 1fr 1fr 120px 160px", gap: "16px", padding: "20px 24px", alignItems: "center", background: isExpanded ? "#fafafa" : "#fff", transition: "background 0.2s" }}>
+                                        {/* ID & Date */}
+                                        <div>
+                                            <p style={{ fontSize: "13px", fontWeight: 600, color: "#1a1a1a", fontFamily: "monospace", marginBottom: "4px" }}>{order.id}</p>
+                                            <p style={{ fontSize: "12px", color: "rgba(0,0,0,0.5)", marginBottom: "8px" }}>
+                                                {new Date(order.createdAt).toLocaleString("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                                            </p>
+                                            <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: 600, background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}` }}>
+                                                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: cfg.dot, display: "inline-block" }} />
+                                                {cfg.label}
+                                            </span>
+                                        </div>
+
+                                        {/* Pembeli */}
+                                        <div>
+                                            <p style={{ fontSize: "14px", fontWeight: 600, color: "#1a1a1a", marginBottom: "4px" }}>{order.customerName}</p>
+                                            <p style={{ fontSize: "13px", color: "rgba(0,0,0,0.6)", marginBottom: "2px" }}>{order.customerPhone}</p>
+                                            <p style={{ fontSize: "12px", color: "rgba(0,0,0,0.4)" }}>{order.city}, {order.province}</p>
+                                        </div>
+
+                                        {/* Produk */}
+                                        <div>
+                                            {order.items.slice(0, 2).map((item, i) => (
+                                                <p key={i} style={{ fontSize: "13px", color: "rgba(0,0,0,0.7)", marginBottom: "4px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                                    {item.name} <span style={{ color: "rgba(0,0,0,0.4)" }}>({item.size}) ×{item.quantity}</span>
+                                                </p>
+                                            ))}
+                                            {order.items.length > 2 && <p style={{ fontSize: "12px", color: "rgba(0,0,0,0.4)", marginTop: "4px" }}>+{order.items.length - 2} produk lain</p>}
+                                        </div>
+
+                                        {/* Total */}
+                                        <div style={{ textAlign: "right" }}>
+                                            <p style={{ fontSize: "15px", fontWeight: 700, color: "#1a1a1a" }}>Rp {(order.total / 1000).toFixed(0)}k</p>
+                                            {order.shippingCost > 0 && <p style={{ fontSize: "11px", color: "rgba(0,0,0,0.4)", marginTop: "2px" }}>+ ongkir</p>}
+                                        </div>
+
+                                        {/* Aksi */}
+                                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                                            {nextStatus && order.status !== "cancelled" && (
+                                                <button onClick={() => {
+                                                    if (nextStatus === "shipped" && !trackingInputs[order.id]) {
+                                                        setExpandedOrder(isExpanded ? null : order.id)
+                                                        return
+                                                    }
+                                                    updateOrderStatus(order.id, nextStatus, trackingInputs[order.id])
+                                                }}
+                                                    style={{ padding: "8px 14px", borderRadius: "8px", border: "none", fontSize: "12px", fontWeight: 600, color: "#fff", background: "#1a1a1a", cursor: "pointer", whiteSpace: "nowrap", transition: "background 0.2s" }}
+                                                    onMouseOver={e => e.currentTarget.style.background = "#333"} onMouseOut={e => e.currentTarget.style.background = "#1a1a1a"}>
+                                                    → {STATUS_CFG[nextStatus].label}
+                                                </button>
+                                            )}
+                                            <button onClick={() => setExpandedOrder(isExpanded ? null : order.id)}
+                                                style={{ padding: "8px", borderRadius: "8px", border: "1px solid rgba(0,0,0,0.1)", background: isExpanded ? "#1a1a1a" : "#fff", color: isExpanded ? "#fff" : "rgba(0,0,0,0.6)", cursor: "pointer", display: "flex", transition: "all 0.2s" }}>
+                                                <Eye size={16} />
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Expanded detail */}
+                                    <AnimatePresence>
+                                        {isExpanded && (
+                                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }}
+                                                style={{ overflow: "hidden", borderTop: "1px solid rgba(0,0,0,0.06)", background: "#fafafa" }}>
+                                                <div style={{ padding: "32px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "32px" }}>
+
+                                                    {/* Detail produk */}
+                                                    <div>
+                                                        <h4 style={{ fontFamily: "serif", fontSize: "16px", color: "#1a1a1a", marginBottom: "16px" }}>Detail Produk</h4>
+                                                        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                                                            {order.items.map((item, i) => (
+                                                                <div key={i} style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", borderBottom: "1px dashed rgba(0,0,0,0.08)", paddingBottom: "8px" }}>
+                                                                    <span style={{ color: "rgba(0,0,0,0.7)" }}>{item.name} <span style={{ color: "rgba(0,0,0,0.4)" }}>({item.size}) ×{item.quantity}</span></span>
+                                                                    <span style={{ color: "#1a1a1a", fontWeight: 600 }}>Rp {(item.price * item.quantity).toLocaleString("id-ID")}</span>
+                                                                </div>
+                                                            ))}
+                                                            <div style={{ paddingTop: "8px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                                                                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", color: "rgba(0,0,0,0.6)" }}>
+                                                                    <span>Subtotal</span><span>Rp {order.subtotal.toLocaleString("id-ID")}</span>
+                                                                </div>
+                                                                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", color: "rgba(0,0,0,0.6)" }}>
+                                                                    <span>Ongkir ({order.courier})</span>
+                                                                    <span>{order.shippingCost === 0 ? "Gratis" : `Rp ${order.shippingCost.toLocaleString("id-ID")}`}</span>
+                                                                </div>
+                                                                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "16px", fontWeight: 700, color: "#1a1a1a", marginTop: "8px", borderTop: "1px solid rgba(0,0,0,0.1)", paddingTop: "12px" }}>
+                                                                    <span>TOTAL</span><span>Rp {order.total.toLocaleString("id-ID")}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Alamat */}
+                                                    <div>
+                                                        <h4 style={{ fontFamily: "serif", fontSize: "16px", color: "#1a1a1a", marginBottom: "16px" }}>Pengiriman</h4>
+                                                        <p style={{ fontSize: "15px", fontWeight: 600, color: "#1a1a1a", marginBottom: "6px" }}>{order.customerName}</p>
+                                                        <p style={{ fontSize: "14px", color: "rgba(0,0,0,0.6)", lineHeight: "1.6" }}>{order.address}</p>
+                                                        <p style={{ fontSize: "14px", color: "rgba(0,0,0,0.6)" }}>{order.city}, {order.province} {order.postalCode}</p>
+                                                        <p style={{ fontSize: "14px", color: "rgba(0,0,0,0.6)", marginTop: "6px" }}>{order.customerPhone}</p>
+                                                        {order.trackingNumber && (
+                                                            <div style={{ marginTop: "16px", padding: "12px 16px", background: "#d1fae5", borderRadius: "8px", border: "1px solid #a7f3d0" }}>
+                                                                <p style={{ fontSize: "11px", color: "#047857", marginBottom: "4px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>No. Resi</p>
+                                                                <p style={{ fontSize: "15px", fontWeight: 700, color: "#065f46", fontFamily: "monospace" }}>{order.trackingNumber}</p>
+                                                            </div>
+                                                        )}
+                                                        {order.notes && <p style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)", fontStyle: "italic", marginTop: "12px", padding: "10px", background: "rgba(0,0,0,0.03)", borderRadius: "8px" }}>📝 "{order.notes}"</p>}
+                                                    </div>
+
+                                                    {/* Update status */}
+                                                    <div>
+                                                        <h4 style={{ fontFamily: "serif", fontSize: "16px", color: "#1a1a1a", marginBottom: "16px" }}>Tindakan</h4>
+
+                                                        {(order.status === "processing" || order.status === "confirmed") && (
+                                                            <div style={{ marginBottom: "16px" }}>
+                                                                <label style={{ display: "block", fontSize: "12px", fontWeight: 500, color: "rgba(0,0,0,0.6)", marginBottom: "8px" }}>Masukkan Resi Pengiriman</label>
+                                                                <input type="text" placeholder="Cth: JNE0012345678"
+                                                                    value={trackingInputs[order.id] ?? order.trackingNumber ?? ""}
+                                                                    onChange={e => setTrackingInputs(prev => ({ ...prev, [order.id]: e.target.value }))}
+                                                                    style={{ width: "100%", background: "#fff", border: "1px solid rgba(0,0,0,0.15)", borderRadius: "8px", padding: "10px 14px", fontSize: "14px", color: "#1a1a1a", outline: "none", boxSizing: "border-box" }} />
+                                                            </div>
+                                                        )}
+
+                                                        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                                                            {STATUS_FLOW.filter(s => s !== order.status).map(status => {
+                                                                const isNext = status === nextStatus;
+                                                                return (
+                                                                    <button key={status} onClick={() => updateOrderStatus(order.id, status, trackingInputs[order.id])}
+                                                                        style={{ padding: "12px 16px", borderRadius: "8px", border: `1px solid ${isNext ? STATUS_CFG[status].border : "rgba(0,0,0,0.08)"}`, fontSize: "13px", fontWeight: isNext ? 600 : 500, cursor: "pointer", background: isNext ? STATUS_CFG[status].bg : "#fff", color: isNext ? STATUS_CFG[status].color : "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", gap: "8px", transition: "all 0.2s" }}
+                                                                        onMouseOver={e => !isNext && (e.currentTarget.style.background = "#f3f4f6")} onMouseOut={e => !isNext && (e.currentTarget.style.background = "#fff")}>
+                                                                        {isNext ? <CheckCircle size={16} /> : <ChevronRight size={14} />}
+                                                                        Tandai {STATUS_CFG[status].label}
+                                                                    </button>
+                                                                )
+                                                            })}
+                                                            {order.status !== "cancelled" && (
+                                                                <button onClick={() => updateOrderStatus(order.id, "cancelled")}
+                                                                    style={{ padding: "12px 16px", borderRadius: "8px", border: "1px solid #fca5a5", fontSize: "13px", fontWeight: 500, cursor: "pointer", background: "#fff", color: "#ef4444", marginTop: "4px" }}>
+                                                                    Batalkan Pesanan
+                                                                </button>
+                                                            )}
+                                                        </div>
+
+                                                        {/* WA button */}
+                                                        <a href={`https://wa.me/${order.customerPhone.replace(/^0/, "62")}?text=Halo%20${encodeURIComponent(order.customerName)}%2C%20kami%20dari%20Julia%20Owers%20ingin%20mengkonfirmasi%20pesanan%20Anda%20(${order.id}).`}
+                                                            target="_blank" rel="noopener noreferrer"
+                                                            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginTop: "16px", padding: "12px", borderRadius: "8px", border: "1px solid #86efac", color: "#059669", fontSize: "13px", fontWeight: 600, textDecoration: "none", background: "#dcfce7", transition: "background 0.2s" }}
+                                                            onMouseOver={e => e.currentTarget.style.background = "#bbf7d0"} onMouseOut={e => e.currentTarget.style.background = "#dcfce7"}>
+                                                            💬 Hubungi via WhatsApp
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
+                            )
+                        })}
+                    </div>
+
+                    <p style={{ textAlign: "center", fontSize: "12px", color: "rgba(0,0,0,0.3)", marginTop: "32px", fontFamily: "serif" }}>
+                        Julia Owers Admin Panel · Fashion Linen
+                    </p>
+                </div>
+            </main>
         </div>
     )
 }

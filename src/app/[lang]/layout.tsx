@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/footer";
 import PageLoader from "@/components/ui/page-loader";
 import { getDictionary } from "@/lib/dictionary";
 import { CartProvider } from "@/components/shop/cart-provider";
+import { AnalyticsInjector } from "@/components/analytics-injector";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,6 +22,7 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://juliaowers.com"),
   title: "Julia Owers | Timeless Linen. Thoughtful Living.",
   description: "Brand fashion linen lokal Indonesia. 100% European linen, handcrafted di Bandung. Desain minimalis timeless untuk wanita modern yang menghargai kenyamanan dan kualitas.",
   keywords: ["linen dress", "fashion linen indonesia", "baju linen bandung", "sustainable fashion", "julia owers", "linen wanita"],
@@ -58,6 +60,7 @@ export default async function RootLayout(props: {
   return (
     <html lang={params.lang || 'en'} className={`${inter.variable} ${lora.variable}`}>
       <body className="antialiased selection:bg-earth selection:text-white" suppressHydrationWarning>
+        <AnalyticsInjector />
         <CartProvider>
           <PageLoader />
           <Header dictionary={dictionary.header} />
